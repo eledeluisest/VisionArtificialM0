@@ -55,7 +55,7 @@ for id_paciente, fichero in enumerate(list_fichero_sanos):
             br = cv2.BRISK_create()
             kp_fast, des_fast = br.compute(imagen, kp1)
             if len(patron) > 0:
-                list_registros.append([id_paciente, 0, patron[0], des1_sift, des1_orb, des_fast])
+                list_registros.append([fichero[2:], 0, patron[0], des1_sift, des1_orb, des_fast])
 
 
 for id_paciente, fichero in enumerate(list_fichero_enfermos_est):
@@ -74,7 +74,7 @@ for id_paciente, fichero in enumerate(list_fichero_enfermos_est):
             br = cv2.BRISK_create()
             kp_fast, des_fast = br.compute(imagen, kp1)
             if len(patron) > 0:
-                list_registros.append([id_paciente, 1, patron[0], des1_sift, des1_orb, des_fast])
+                list_registros.append([fichero[2:], 1, patron[0], des1_sift, des1_orb, des_fast])
 
 
 
@@ -95,7 +95,7 @@ for id_paciente, fichero in enumerate(list_fichero_enfermos_ev):
             kp_fast, des_fast = br.compute(imagen, kp1)
             if len(patron) > 0:
                 print('Entro')
-                list_registros.append([id_paciente, 1, patron[0], des1_sift, des1_orb, des_fast])
+                list_registros.append([fichero[2:], 1, patron[0], des1_sift, des1_orb, des_fast])
 
 
 df_patrones = pd.DataFrame(list_patrones, columns=['patron_reg', 'sift_pat', 'orb_pat', 'fast_pat'])
@@ -137,4 +137,4 @@ def match_sift(flann, col1, col2):
 
 df_all['sift_n_match'] = df_all.apply(lambda x: match_sift(flann, x['sift_reg'], x['sift_pat']), axis=1)
 
-df_all.loc[:,['target', 'patron_reg', 'orb_n_match', 'fast_n_match', 'sift_n_match']].to_csv('res/data_tab.csv')
+df_all.loc[:,['id_paciente', 'target', 'patron_reg', 'orb_n_match', 'fast_n_match', 'sift_n_match']].to_csv('res/data_tab.csv')
